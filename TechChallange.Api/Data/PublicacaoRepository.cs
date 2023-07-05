@@ -73,22 +73,22 @@ namespace TechChallangeApi.Data
             }
         }
 
-        public Publicacao GetPublicacaoByUsuarioEData(Usuario usuario, DateTime dateTime)
-        {
-            try
-            {
+        //public Publicacao GetPublicacaoByUsuarioEData(/*Usuario usuario, */DateTime dateTime)
+        //{
+        //    try
+        //    {
 
-                //Publicacao publicacaoResultado = context.Publicacoes.FirstOrDefault(p => p.Usuario == usuario && p.DataEnvio == dateTime);
-                //if (publicacaoResultado == null) throw new Exception("Publicação não encontrada");
-                //return publicacaoResultado;
+        //        //Publicacao publicacaoResultado = context.Publicacoes.FirstOrDefault(p => p.Usuario == usuario && p.DataEnvio == dateTime);
+        //        //if (publicacaoResultado == null) throw new Exception("Publicação não encontrada");
+        //        //return publicacaoResultado;
 
-                return null;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }
+        //        return null;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw e;
+        //    }
+        //}
 
         public IEnumerable<object> GetPublicacoes(Guid? usuarioId)
         {

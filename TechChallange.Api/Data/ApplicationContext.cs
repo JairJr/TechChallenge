@@ -18,10 +18,10 @@ public class ApplicationContext : DbContext
 		modelBuilder.Entity<Publicacao>()
 			  .HasKey(x => x.Id);
 
-		modelBuilder.Entity<Publicacao>()
-		   .HasOne(x => x.Usuario)
-		   .WithMany(x => x.Publicacoes)
-		   .HasForeignKey(x => x.UsuarioId);
+		//modelBuilder.Entity<Publicacao>()
+		//   .HasOne(x => x.Usuario)
+		//   .WithMany(x => x.Publicacoes)
+		//   .HasForeignKey(x => x.UsuarioId);
 
 		modelBuilder.Entity<Publicacao>()
 		   .HasOne(x => x.Foto)
