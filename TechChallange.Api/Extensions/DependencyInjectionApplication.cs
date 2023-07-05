@@ -44,7 +44,6 @@ namespace TechChallenge.Api.Extensions
 			builder.Services.AddScoped<IFotosRepository, FotosRepository>();
 			builder.Services.AddScoped<IFotosRepository, FotosRepository>();
 			builder.Services.AddScoped<IPublicacaoRepository, PublicacaoRepository>();
-			builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 			return services;
 		}

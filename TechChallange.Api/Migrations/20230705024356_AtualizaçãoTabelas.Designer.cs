@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TechChallengeApi.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230705024356_AtualizaçãoTabelas")]
+    partial class AtualizaçãoTabelas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,7 +83,28 @@ namespace TechChallengeApi.Migrations
                     b.HasIndex("FotoId")
                         .IsUnique();
 
+                    b.HasIndex("UsuarioId");
+
                     b.ToTable("Publicacoes");
+                });
+
+            modelBuilder.Entity("TechChallangeApi.Models.Usuario", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("TechChallangeApi.Models.Publicacao", b =>
@@ -91,13 +115,26 @@ namespace TechChallengeApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TechChallangeApi.Models.Usuario", "Usuario")
+                        .WithMany("Publicacoes")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Foto");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("TechChallangeApi.Models.Foto", b =>
                 {
                     b.Navigation("Publicacao")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TechChallangeApi.Models.Usuario", b =>
+                {
+                    b.Navigation("Publicacoes");
                 });
 #pragma warning restore 612, 618
         }

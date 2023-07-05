@@ -20,6 +20,7 @@ namespace TechChallangeApi.Data
             {
                 if (publicacao == null) throw new ArgumentNullException(nameof(publicacao));
                 await context.Set<Publicacao>().AddAsync(publicacao);
+                //await context.AddAsync(publicacao);
                 await context.SaveChangesAsync();
                 return publicacao;
             }
@@ -73,41 +74,41 @@ namespace TechChallangeApi.Data
             }
         }
 
-        //public Publicacao GetPublicacaoByUsuarioEData(/*Usuario usuario, */DateTime dateTime)
-        //{
-        //    try
-        //    {
-
-        //        //Publicacao publicacaoResultado = context.Publicacoes.FirstOrDefault(p => p.Usuario == usuario && p.DataEnvio == dateTime);
-        //        //if (publicacaoResultado == null) throw new Exception("Publicação não encontrada");
-        //        //return publicacaoResultado;
-
-        //        return null;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw e;
-        //    }
-        //}
-
-        public IEnumerable<object> GetPublicacoes(Guid? usuarioId)
+        public Publicacao GetPublicacaoByUsuarioEData(Guid usuarioId, DateTime dateTime)
         {
             try
             {
-                var publicacoesResultado = context.Publicacoes
-                                                  .Include(x => x.Foto)
-                                                  .Where(p => p.UsuarioId == usuarioId && p.Ativa)
-                                                  .Select(x => new { id = x.Id,  nome =  x.Nome, urlPerfil = x.Foto.Url})
-                                                  .ToList();
 
-                if (publicacoesResultado == null) throw new Exception("Publicações não encontradas para esse usuário");
-                return publicacoesResultado;
+                Publicacao publicacaoResultado = context.Publicacoes.FirstOrDefault(p => p.UsuarioId == usuarioId && p.DataEnvio == dateTime);
+                if (publicacaoResultado == null) throw new Exception("Publicação não encontrada");
+                return publicacaoResultado;
+
+                return null;
             }
             catch (Exception e)
             {
                 throw e;
             }
         }
+
+        //public IEnumerable<object> GetPublicacoes(Guid usuarioId)
+        //{
+        //    try
+        //    {
+        //        var publicacoesResultado = context.Publicacoes
+        //                                          .Include(x => x.Foto)
+        //                                          .Where(p => p.UsuarioId == usuarioId && p.Ativa)
+        //                                          .Select(x => new { id = x.Id,  nome =  x.Nome, urlPerfil = x.Foto.Url})
+        //                                          .ToList();
+
+        //        if (publicacoesResultado == null) throw new Exception("Publicações não encontradas para esse usuário");
+        //        return publicacoesResultado;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw e;
+        //    }
+        //}
 
 		public IEnumerable<Publicacao> GetPublicacoes(Guid usuarioId)
 		{

@@ -20,8 +20,6 @@ namespace TechChallangeApi.Models
         [Required]
         public int Id { get; set; }
         public string Nome { get; set; }
-        //public virtual Usuario Usuario { get; set; }
-        //public string UrlPerfil { get; set; }
         public virtual Foto Foto { get; set; }
         public DateTime DataEnvio { get; set; }
         public Guid UsuarioId { get; set; }

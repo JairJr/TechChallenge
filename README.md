@@ -3,6 +3,7 @@
 ## Introdução
 - Projeto criado para o Tech Challenge dotnet da Fase 1 da PósTech em Arquitetura de Sistemas .Net com Azure da FIAP.
 - Objetivo: Desenvolver uma aplicação Web com funcionalidades de upload e exibição de imagens, utilizando Serviços de Storage e banco de dados Azure.
+- Vídeo da entrega: https://youtu.be/MicNhRRvxTA
 
 ## Funcionalidades
 
