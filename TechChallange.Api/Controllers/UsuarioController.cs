@@ -19,13 +19,13 @@ namespace TechChallenge.Api.Controllers
 		}
 
 		[HttpPost()]
-		public IActionResult PublicacoesByUserIdAndDate(usuarioInsert command)
+		public async Task<IActionResult> PublicacoesByUserIdAndDate(usuarioInsert command)
 		{
 			try
 			{
 				var usuario = new Usuario(command.Nome, command.Email, command.Id);
 
-				var result = _usuarioRepository.AddUsuario(usuario);
+				await _usuarioRepository.AddUsuario(usuario);
 
 				return Ok();
 			}
