@@ -8,8 +8,8 @@ namespace TechChallangeApi.Data
         void DeletePublicacao(int id);
 		void DeletePublicacaoAnalogicamente(int id);
 		Publicacao GetPublicacaoById(int id);
-        //Publicacao GetPublicacaoByUsuarioEData(Usuario usuario, DateTime dateTime);
+        Publicacao GetPublicacaoByUsuarioEData(Guid usuarioId, DateTime dateTime);
         IEnumerable<Publicacao> GetPublicacoes(Guid usuarioId);
-		IEnumerable<object> GetPublicacoes(Guid? usuarioId);
+		//IEnumerable<object> GetPublicacoes(Guid? usuarioId);
 	}
 }

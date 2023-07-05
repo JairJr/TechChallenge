@@ -20,14 +20,12 @@ namespace TechChallangeApi.Controllers
 
         private readonly ILogger<PubliController> _logger;
         private readonly IPublicacaoRepository _publicacaoRepository;
-        private readonly IUsuarioRepository _usuarioRepository;
         private readonly FotoController _fotoController;
 
-        public PubliController(ILogger<PubliController> logger, IPublicacaoRepository publicacaoRepository, IUsuarioRepository usuarioRepository, FotoController fotoController)
+        public PubliController(ILogger<PubliController> logger, IPublicacaoRepository publicacaoRepository, FotoController fotoController)
         {
             _logger = logger;
             _publicacaoRepository = publicacaoRepository;
-            _usuarioRepository = usuarioRepository;
             _fotoController = fotoController;
         }
 
@@ -42,7 +40,6 @@ namespace TechChallangeApi.Controllers
                 if (idUsuario == Guid.Empty)
                     return Unauthorized();
 
-                //Usuario usuario = _usuarioRepository.GetUsuarioById(ObterUsuarioId());
                 var publicacoes = _publicacaoRepository.GetPublicacoes(idUsuario);
 
                 return Ok(publicacoes);
@@ -57,8 +54,6 @@ namespace TechChallangeApi.Controllers
         [SwaggerOperation(Summary = "Publicação do usuário em data específica", Description = "Retorna Lista com todas as publicações na data informada e publicadas pelo usuário que possue o ID informado")]
         public IActionResult PublicacoesByUserIdAndDate(Guid usuarioId, [FromBody] string date)
         {
-            Usuario usuario = _usuarioRepository.GetUsuarioById(usuarioId);
-
             DateTime dataComparacao = DateTime.ParseExact(date, "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
             IEnumerable<Publicacao> publicacoes = _publicacaoRepository.GetPublicacoes(usuarioId).Where(p => p.DataEnvio.Date.CompareTo(dataComparacao.Date) == 0);
@@ -117,6 +112,8 @@ namespace TechChallangeApi.Controllers
 				var usuarioId = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 
 				if (usuarioId == null) return Guid.Empty;
+
+                
 
 				return new Guid(usuarioId);
 			}

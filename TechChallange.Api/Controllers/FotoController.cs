@@ -28,17 +28,15 @@ namespace TechChallangeApi.Controllers
     {
         private readonly ILogger<FotoController> _logger;
         private readonly IFotosRepository _fotoRepository;
-        private readonly IUsuarioRepository _usuarioRepository;
         private readonly ILogFactory _logFactory;
 		private readonly HttpClient _httpClient;
         private readonly Guid _usuarioId;
         private readonly Serilog.ILogger _serilog;
 
-        public FotoController(ILogger<FotoController> logger, IFotosRepository fotoRepository, IUsuarioRepository usuarioRepository, HttpClient httpClient, ILogFactory logFactory)
+        public FotoController(ILogger<FotoController> logger, IFotosRepository fotoRepository, HttpClient httpClient, ILogFactory logFactory)
         {
             _logger = logger;
             _fotoRepository = fotoRepository;
-            _usuarioRepository = usuarioRepository;
             _httpClient = httpClient;
             _logFactory = logFactory;
 		}
@@ -57,10 +55,13 @@ namespace TechChallangeApi.Controllers
         [SwaggerOperation(Summary = "Salvar foto", Description = "Solicita a criação da foto no Storage e salva informações no DB")]
         public async Task<IActionResult> NewFoto(IFormFile formFile)
 		{
+            var usuarioId = obterUsuarioId();
+
+            if (usuarioId == null) return Unauthorized();
             // Enviar a requisição e obter a resposta
 
-			// Adicione o conteúdo do arquivo ao HttpContent
-			var fileContent = new StreamContent(formFile.OpenReadStream());
+            // Adicione o conteúdo do arquivo ao HttpContent
+            var fileContent = new StreamContent(formFile.OpenReadStream());
 			var content = new MultipartFormDataContent();
 			content.Add(fileContent, "formFile", formFile.FileName);
 
@@ -71,7 +72,7 @@ namespace TechChallangeApi.Controllers
 
             if (resultPost == null) return NoContent();
 
-            var fotoResult = await GetFoto(resultPost, fileContent);
+            var fotoResult = await GetFoto(resultPost, fileContent, usuarioId);
 
 
 			if (fotoResult == null) return NoContent();
@@ -79,7 +80,7 @@ namespace TechChallangeApi.Controllers
 
         }
 
-        private async Task<Foto> GetFoto(string resultPost, StreamContent fileContent)
+        private async Task<Foto> GetFoto(string resultPost, StreamContent fileContent, Guid usuarioId)
         {
             try
             {
@@ -96,9 +97,7 @@ namespace TechChallangeApi.Controllers
 		    	string url = responseGetString.Substring(1, responseGetString.IndexOf('?'));
 				string extensao = Path.GetExtension(fileContent.Headers.ContentDisposition.FileName);
 
-                Guid resultUsuarioId = obterUsuarioId();
-
-                return await _fotoRepository.AddFoto(new Foto(true, url, extensao, resultUsuarioId));
+                return await _fotoRepository.AddFoto(new Foto(true, url, extensao, usuarioId));
 			}
             catch (Exception e)
             {
