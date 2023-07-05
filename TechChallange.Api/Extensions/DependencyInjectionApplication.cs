@@ -90,7 +90,7 @@ namespace TechChallenge.Api.Extensions
 			Serilog.Debugging.SelfLog.Enable(msg =>
 			{
 				Debug.Print(msg);
-				Debugger.Break();
+				//Debugger.Break();
 			});
 
 			builder.Host.UseSerilog();

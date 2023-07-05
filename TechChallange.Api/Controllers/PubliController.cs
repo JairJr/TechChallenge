@@ -39,7 +39,7 @@ namespace TechChallangeApi.Controllers
             {
                 var idUsuario = ObterUsuarioId();
 
-                if (!idUsuario.HasValue)
+                if (idUsuario == Guid.Empty)
                     return Unauthorized();
 
                 //Usuario usuario = _usuarioRepository.GetUsuarioById(ObterUsuarioId());
@@ -77,10 +77,10 @@ namespace TechChallangeApi.Controllers
 
                 var idUsuario = ObterUsuarioId();
 
-                if (!idUsuario.HasValue)
+                if (idUsuario == Guid.Empty)
                     return Unauthorized();
 
-                Publicacao publicacao = await _publicacaoRepository.AddPublicacao(new Publicacao(puclicacao.Nome, idUsuario.Value, puclicacao.FotoId));
+                Publicacao publicacao = await _publicacaoRepository.AddPublicacao(new Publicacao(puclicacao.Nome, idUsuario, puclicacao.FotoId));
 
                 return Ok(publicacao);
             }
@@ -97,7 +97,7 @@ namespace TechChallangeApi.Controllers
 			{
 				var idUsuario = ObterUsuarioId();
 
-				if (!idUsuario.HasValue)
+				if (idUsuario == Guid.Empty)
 					return Unauthorized();
 
 				_publicacaoRepository.DeletePublicacaoAnalogicamente(publicacaoId);
@@ -110,19 +110,19 @@ namespace TechChallangeApi.Controllers
 			}
 		}
 
-		private Guid? ObterUsuarioId()
+		private Guid ObterUsuarioId()
 		{
             try
             {
-				var usuarioId = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti);
+				var usuarioId = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 
-				if (usuarioId == null) return null;
+				if (usuarioId == null) return Guid.Empty;
 
 				return new Guid(usuarioId);
 			}
             catch (Exception)
             {
-                return null;
+                return Guid.Empty;
             }
 		}
 	}

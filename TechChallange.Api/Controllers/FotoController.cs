@@ -96,7 +96,9 @@ namespace TechChallangeApi.Controllers
 		    	string url = responseGetString.Substring(1, responseGetString.IndexOf('?'));
 				string extensao = Path.GetExtension(fileContent.Headers.ContentDisposition.FileName);
 
-	    		return await _fotoRepository.AddFoto(new Foto(true, url, extensao, obterUsuarioId()));
+                Guid resultUsuarioId = obterUsuarioId();
+
+                return await _fotoRepository.AddFoto(new Foto(true, url, extensao, resultUsuarioId));
 			}
             catch (Exception e)
             {
@@ -132,9 +134,9 @@ namespace TechChallangeApi.Controllers
 
         private Guid obterUsuarioId()
         {
-            var usuarioId = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti);
+            var usuarioId = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 
-            if (usuarioId == null) return null;
+            if (usuarioId == null) return Guid.Empty;
 
 			return new Guid(usuarioId);
 		}
